@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+.sg-wrapper {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    perspective: 1000px;
+}
+
+.sg-main_back {
+    position: absolute;
+    border-radius: 10px;
+    transform: rotate(90deg);
+    width: 11em;
+    height: 11em;
+    background: linear-gradient(270deg, #03a9f4, #cc39a4, #ffb5d2);
+    z-index: -2;
+    box-shadow: inset 0px 0px 180px 5px #ffffff;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.sg-main {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    width: 14em;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.sg-card {
+    width: 60px;
+    height: 60px;
+    border-top-left-radius: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.2);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .4s ease-in-out, .2s background-color ease-in-out, .2s background-image ease-in-out;
+    cursor: pointer;
+}
+
+.sg-card svg {
+    width: 30px;
+    height: 30px;
+    opacity: 0;
+    transition: .2s ease-in-out;
+}
+
+.sg-card:nth-child(1) { border-radius: 10px 0 0 0; }
+.sg-card:nth-child(2) { border-radius: 0; }
+.sg-card:nth-child(3) { border-radius: 0 10px 0 0; }
+.sg-card:nth-child(4) { border-radius: 0; }
+.sg-card:nth-child(5) { border-radius: 0; }
+.sg-card:nth-child(6) { border-radius: 0; }
+.sg-card:nth-child(7) { border-radius: 0 0 0 10px; }
+.sg-card:nth-child(8) { border-radius: 0; }
+.sg-card:nth-child(9) { border-radius: 0 0 10px 0; }
+
+.sg-main:hover {
+    width: 14em;
+    cursor: pointer;
+}
+
+.sg-main:hover .sg-main_back {
+    opacity: 0;
+}
+
+.sg-main:hover .sg-card {
+    margin: .2em;
+    border-radius: 10px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.2);
+}
+
+.sg-main:hover .sg-card:nth-child(5) {
+    border: transparent;
+}
+
+.sg-main:hover .sg-text {
+    opacity: 0;
+    z-index: -3;
+}
+
+.sg-main:hover .sg-card svg {
+    opacity: 1;
+}
+
+/* Instagram */
+.sg-card:nth-child(1) .instagram { fill: #fd58a2; }
+.sg-card:nth-child(1):hover { background-color: #cc39a4; }
+.sg-card:nth-child(1):hover .instagram { fill: white; }
+
+/* Twitter/X */
+.sg-card:nth-child(2) .twitter { fill: #1da1f2; }
+.sg-card:nth-child(2):hover { background-color: #1a1c1d; }
+.sg-card:nth-child(2):hover .twitter { fill: white; }
+
+/* Gmail */
+.sg-card:nth-child(3) .gmail { 
+    fill: #EA4335; 
+}
+.sg-card:nth-child(3):hover { 
+    background-color: #EA4335; 
+}
+.sg-card:nth-child(3):hover .gmail { 
+    fill: white; 
+}
+
+/* Codepen */
+.sg-card:nth-child(4) .codepen { fill: black; }
+.sg-card:nth-child(4):hover { background-color: #1E1F26; }
+.sg-card:nth-child(4):hover .codepen { fill: white; }
+
+/* Linkedin */
+.sg-card:nth-child(5) .linkedin { fill: #0e76a8; }
+.sg-card:nth-child(5):hover { background-color: #0e76a8; }
+.sg-card:nth-child(5):hover .linkedin { fill: white; }
+
+/* Discord */
+.sg-card:nth-child(6) .discord { fill: #5865F2; }
+.sg-card:nth-child(6):hover { background-color: #8c9eff; }
+.sg-card:nth-child(6):hover .discord { fill: white; }
+
+/* Github */
+.sg-card:nth-child(7) .github { fill: black; }
+.sg-card:nth-child(7):hover { background-color: black; }
+.sg-card:nth-child(7):hover .github { fill: white; }
+
+/* Telegram */
+.sg-card:nth-child(8) .telegram { fill: #29b6f6; }
+.sg-card:nth-child(8):hover { background-color: #29b6f6; }
+.sg-card:nth-child(8):hover .telegram path { fill: white !important; }
+
+/* Reddit */
+.sg-card:nth-child(9) .reddit { stroke: none; fill: #ff4500; }
+.sg-card:nth-child(9):hover { background-color: rgb(255,69,0); }
+.sg-card:nth-child(9):hover .reddit circle { fill: rgb(255,69,0); }
+.sg-card:nth-child(9):hover .reddit path { fill: white; }
+
+.sg-text {
+    position: absolute;
+    font-size: 0.7em;
+    transition: .4s ease-in-out;
+    color: black;
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 0.33em;
+    z-index: 3;
+    pointer-events: none;
+}
