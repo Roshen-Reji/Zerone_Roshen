@@ -210,7 +210,7 @@ class AnimateValue extends React.Component {
       className: this.props.className,
       delay: this.props.delay,
       value: this.props.value,
-      transformFn: (value, step) => step === 1 ? (value % 1 != 0 ? value.toFixed(1) : value) : Math.abs(Math.floor(value)),
+      transformFn: (value, step) => step === 1 ? (value % 1 !== 0 ? value.toFixed(1) : value) : Math.abs(Math.floor(value)),
     });
   }
 }

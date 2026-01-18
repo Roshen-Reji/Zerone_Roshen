@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import LoadingScreen from './components/common/LoadingScreen';
 import Navigation from './components/common/Navigation';
-import ThreeBackground from './components/backgrounds/ThreeBackground';
+//import ThreeBackground from './components/backgrounds/ThreeBackground';
 // import SlinkyCursor from './components/backgrounds/SlinkyCursor';
 import HomePage from './pages/HomePage';
 import TechnicalPage from './pages/TechnicalPage';
@@ -30,6 +30,8 @@ const App = () => {
         return <ContactPage />;
       case 'projectAutopsy':
         return <ProjectAutopsy onNavigate={setCurrentPage} />;
+      default:
+        return <HomePage onNavigate={setCurrentPage} />;
     }
   };
 
