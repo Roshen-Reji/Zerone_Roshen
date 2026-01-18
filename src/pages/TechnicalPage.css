@@ -50,6 +50,22 @@ body {
   animation: contentEnter 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
+/* --- MOBILE SPECIFIC ANIMATIONS --- */
+
+/* Shimmer/Pulse for Capsules */
+@keyframes capsulePulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+  50% { box-shadow: 0 0 15px rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3); }
+}
+
+/* Apply this via CSS since we might want it only on smaller screens easily */
+@media (max-width: 768px) {
+  li[class*="rounded-full"] {
+     animation: capsulePulse 3s infinite ease-in-out;
+  }
+}
+
+
 /* --- EXISTING TRANSITIONS --- */
 
 .app-slide-aside__name-part {
