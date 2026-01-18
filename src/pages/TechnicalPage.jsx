@@ -307,9 +307,9 @@ const SliderNavigation = ({ activeSlide, setActiveSlide, itemsNames }) => (
 const Header = () => (
   <div className="app-header flex justify-between items-center py-4 px-6 md:py-8 md:px-0 relative z-50">
     <div className="app-header__logo">
-       <h1 className="text-6xl md:text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/10 drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+       <h1 className="text-2xl md:text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/10 drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
          ZERONE
-         <span className="text-cyan-400 font-mono text-3xl ml-2 tracking-widest font-bold">2026</span>
+         <span className="text-cyan-400 font-mono text-base md:text-2xl ml-2 tracking-widest font-light">2026</span>
        </h1>
     </div>
     <div className="app-header__nav font-mono text-xs md:text-sm text-white/50 border border-white/10 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md hidden md:block">
