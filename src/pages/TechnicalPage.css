@@ -134,7 +134,7 @@ a { text-decoration: none; color: #fff; }
 @media only screen and (min-width:1200px) { .app-header { padding: 50px 0 60px; } }
 @media only screen and (min-width:1800px) { .app-header { padding: 80px 0; } }
 
-.app-header__logo { font-family: "BebasNeue"; font-size: 2rem; letter-spacing: 2px; }
+.app-header__logo { font-family: "BebasNeue"; font-size: 2rem; letter-spacing: 2px;font-style: bold; }
 .app-header__nav { cursor: pointer; font-size: 1.2rem; text-transform: uppercase;}
 
 /* Slide Item */
@@ -319,3 +319,54 @@ a { text-decoration: none; color: #fff; }
 .app-slider-navigation__link--active { font-size: 1.2rem; transition: font-size 0.3s linear, color 0.2s linear 0.8s; }
 @media only screen and (min-width:768px) { .app-slider-navigation__link--active { font-size: 1.4rem; } }
 @media only screen and (min-width:1200px) { .app-slider-navigation__link--active { font-size: 1.8rem; } }
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.floating-card {
+  animation: float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Background Pulse */
+@keyframes pulseSlow {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.05); opacity: 0.5; }
+}
+.animate-pulse-slow {
+  animation: pulseSlow 8s ease-in-out infinite;
+}
+
+/* Content Entrance with Blur */
+@keyframes contentEnter {
+  0% { 
+    opacity: 0; 
+    transform: translateY(20px); 
+    filter: blur(10px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); 
+    filter: blur(0); 
+  }
+}
+.animate-content-enter {
+  animation: contentEnter 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* --- MOBILE SPECIFIC ANIMATIONS --- */
+
+/* Shimmer/Pulse for Capsules */
+@keyframes capsulePulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+  50% { box-shadow: 0 0 15px rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3); }
+}
+
+/* Apply this via CSS since we might want it only on smaller screens easily */
+@media (max-width: 768px) {
+  li[class*="rounded-full"] {
+     animation: capsulePulse 3s infinite ease-in-out;
+  }
+}
