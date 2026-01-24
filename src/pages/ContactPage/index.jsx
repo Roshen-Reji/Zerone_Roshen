@@ -89,7 +89,7 @@ const ContactPage = () => {
 
          {/* Gmail - Wrapped in onClick to intercept the link */}
           <div className="sg-card" onClick={handleMailClick}> 
-             <ButtonMailto email="roshen091.edu@gmail.com" >
+             <ButtonMailto email="roshen09.edu@gmail.com" >
               <svg 
                 className="gmail" 
                 xmlns="http://www.w3.org/2000/svg" 
