@@ -1,5 +1,66 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap");
 
+/* --- CONTAINER LAYOUT --- */
+.beam-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-family: 'Roboto Mono', monospace;
+}
+
+/* --- STREAM & LINE --- */
+.card-stream {
+    position: absolute;
+    width: 100%;
+    height: 350px; 
+    display: flex;
+    align-items: center;
+    perspective: 1200px;
+    z-index: 5;
+}
+
+.card-line {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    white-space: nowrap;
+    cursor: grab;
+    user-select: none;
+    will-change: transform;
+    padding-left: 50vw; 
+    padding-right: 50vw;
+}
+
+.card-line:active,
+.card-line.dragging {
+    cursor: grabbing;
+}
+
+/* --- CARD WRAPPER --- */
+.card-wrapper {
+    position: relative;
+    width: 400px;
+    height: 250px;
+    flex-shrink: 0;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+}
+
+.card-wrapper:hover {
+    transform: translateY(-15px) scale(1.05);
+    z-index: 50;
+}
+
+.card-wrapper:hover .card {
+    box-shadow: 0 20px 50px rgba(0, 255, 255, 0.15);
+}
+
+/* --- BASE CARD STYLES
 /* --- CONTAINER LAYOUT --- */
 .beam-container {
     position: relative;
@@ -212,4 +273,13 @@
     z-index: 15;
     pointer-events: none;
     mix-blend-mode: plus-lighter;
+}
+
+/* --- MOBILE ADJUSTMENTS --- */
+/* Hide the scanner visual line and laser canvas on mobile */
+@media (max-width: 768px) {
+    .scanner, 
+    #scannerCanvas {
+        display: none !important;
+    }
 }

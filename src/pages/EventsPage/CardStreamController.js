@@ -17,6 +17,7 @@ class CardStreamController {
     // Interaction State
     this.isAnimating = true;
     this.isDragging = false;
+    this.isScanActive = false; // New: Tracks if the button is clicked
     this.lastTime = 0;
     this.lastMouseX = 0;
     this.mouseVelocity = 0;
@@ -52,6 +53,11 @@ class CardStreamController {
     this.updateCardPosition();
     this.animate();
     this.startPeriodicUpdates();
+  }
+
+  // --- NEW METHOD: Called when you click "Initiate Scan" ---
+  setScanActive(active) {
+    this.isScanActive = active;
   }
 
   destroy() {
@@ -256,7 +262,6 @@ class CardStreamController {
     ];
     const eventData = eventDefinitions[index % eventDefinitions.length];
 
-    // UPDATED: Use CSS class for styling
     const title = document.createElement("div");
     title.className = "card-title";
     title.innerText = eventData.title;
@@ -285,8 +290,32 @@ class CardStreamController {
   }
 
   updateCardClipping() {
+    // Check if device is mobile
+    const isMobile = window.innerWidth < 768;
+    
+    // IF mobile AND Scan button is NOT active, show full cards (no scan effect)
+    if (isMobile && !this.isScanActive) {
+        document.querySelectorAll(".card-wrapper").forEach((wrapper) => {
+          const normalCard = wrapper.querySelector(".card-normal");
+          const asciiCard = wrapper.querySelector(".card-ascii");
+  
+          // Reset Normal Card to full visibility
+          normalCard.style.setProperty("--clip-right", "0%");
+          // Hide ASCII Card completely
+          asciiCard.style.setProperty("--clip-left", "0%");
+          
+          wrapper.removeAttribute("data-scanned");
+        });
+        
+        // Ensure the global scanner signal is off
+        if (window.setScannerScanning) window.setScannerScanning(false);
+        
+        return; 
+    }
+
+    // --- NORMAL SCANNING LOGIC (Desktop OR Mobile with Active Button) ---
     const scannerX = window.innerWidth / 2;
-    const scannerWidth = 4; // Thinner scanner
+    const scannerWidth = 4;
     const scannerLeft = scannerX - scannerWidth / 2;
     const scannerRight = scannerX + scannerWidth / 2;
     let anyScanningActive = false;
@@ -313,7 +342,6 @@ class CardStreamController {
           wrapper.setAttribute("data-scanned", "true");
           const scanEffect = document.createElement("div");
           scanEffect.className = "scan-effect";
-          // Position the beam exactly at the cut point
           scanEffect.style.left = `${scannerIntersectLeft}px`; 
           wrapper.appendChild(scanEffect);
           setTimeout(() => {
@@ -331,12 +359,14 @@ class CardStreamController {
         wrapper.removeAttribute("data-scanned");
       }
     });
+    
+    // Broadcast the state (for Dashboard lights, etc.)
     if (window.setScannerScanning) window.setScannerScanning(anyScanningActive);
   }
 
   updateAsciiContent() {
     document.querySelectorAll(".ascii-content").forEach((content) => {
-      if (Math.random() < 0.1) { // Lower jitter frequency
+      if (Math.random() < 0.1) {
         const { width, height } = this.calculateCodeDimensions(400, 250);
         content.textContent = this.generateCode(width, height);
       }

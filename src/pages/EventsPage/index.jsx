@@ -13,11 +13,30 @@ const EventsPage = forwardRef((props, ref) => {
   // 2. Define the external API for this component
   useImperativeHandle(ref, () => ({
     setScannerScanning: (active) => {
+      // 1. Tell the ParticleScanner (visual laser/particles) to toggle
       if (scannerRef.current) {
         scannerRef.current.setScanningActive(active);
       }
+      
+      // 2. Tell the CardStreamController (card glitching) to toggle
+      if (streamRef.current) {
+        streamRef.current.setScanActive(active);
+      }
+
+      // 3. Toggle CSS Visibility on Mobile
+      // We toggle the 'active' class on the HTML elements so they fade in/out
+      const scannerEl = document.querySelector('.scanner');
+      const scannerCanvas = document.getElementById('scannerCanvas');
+      
+      if (active) {
+          scannerEl?.classList.add('active');
+          scannerCanvas?.classList.add('active');
+      } else {
+          scannerEl?.classList.remove('active');
+          scannerCanvas?.classList.remove('active');
+      }
     },
-    // You can expose other methods here too, e.g., pause(), reset()
+    
     pause: () => {
       if (streamRef.current) streamRef.current.toggleAnimation();
     }
@@ -31,8 +50,6 @@ const EventsPage = forwardRef((props, ref) => {
     streamRef.current = stream;
     systemRef.current = system;
     scannerRef.current = scanner;
-
-    // Note: window.setScannerScanning assignment is removed completely
 
     return () => {
       if (streamRef.current) streamRef.current.destroy();
