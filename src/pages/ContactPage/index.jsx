@@ -1,20 +1,74 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './styles.css';
 import ButtonMailto from './ButtonMailto';
+
 const ContactPage = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Toggle animation state
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  // Helper to determine if we should open the link or just expand the menu
+  const shouldOpenLink = () => {
+    // 1. Desktop/Tablet (Width > 768px):
+    //    We assume CSS hover handles the visual expansion. 
+    //    We allow the click to open the link immediately.
+    if (window.innerWidth > 768) {
+      return true;
+    }
+
+    // 2. Mobile (Width <= 768px):
+    //    We ONLY open the link if the menu is ALREADY expanded.
+    //    If it's collapsed, this function returns false, triggering the expansion instead.
+    return isExpanded;
+  };
+
+  // Handler for standard links (Instagram, GitHub, etc.)
+  const handleLinkClick = (e, url) => {
+    if (shouldOpenLink()) {
+      e.stopPropagation(); // Stop bubbling to prevent the menu from toggling (closing)
+      window.open(url, '_blank');
+    } else {
+      // Logic for First Tap on Mobile:
+      // We DO NOT call open(). We DO NOT stop propagation.
+      // We let the event bubble up to the main div to trigger 'toggleExpand'.
+    }
+  };
+
+  // Special handler for the Mail button since it involves an <a> tag
+  const handleMailClick = (e) => {
+    if (shouldOpenLink()) {
+      e.stopPropagation(); // Allow the <a> tag to fire, but stop bubbling
+    } else {
+      e.preventDefault(); // STOP the <a> tag from opening the mail app
+      // Let the event bubble up to the main div to trigger 'toggleExpand'
+    }
+  };
+
   return (
-    // <div> <ButtonMailto email="roshen09.edu@gmail.com" >Mail</ButtonMailto></div>
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       <h1 className="text-3xl md:text-5xl font-bold text-white mb-12 text-center">
         Get In Touch
       </h1>
 
       <div className="sg-wrapper">
-        <div className="sg-main">
+        {/* The main container toggles the 'expanded' class on click */}
+        <div 
+          className={`sg-main ${isExpanded ? 'expanded' : ''}`} 
+          onClick={toggleExpand}
+        >
           
           {/* Instagram */}
           <div className="sg-card">
-            <svg className="instagram" onClick={() => window.open('https://www.instagram.com/roz_shen/', '_blank')} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fillRule="nonzero">
+            <svg 
+              className="instagram" 
+              onClick={(e) => handleLinkClick(e, 'https://www.instagram.com/roz_shen/')} 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 256 256" 
+              fillRule="nonzero"
+            >
               <g transform="scale(8,8)">
                 <path d="M11.46875,5c-3.55078,0 -6.46875,2.91406 -6.46875,6.46875v9.0625c0,3.55078 2.91406,6.46875 6.46875,6.46875h9.0625c3.55078,0 6.46875,-2.91406 6.46875,-6.46875v-9.0625c0,-3.55078 -2.91406,-6.46875 -6.46875,-6.46875zM11.46875,7h9.0625c2.47266,0 4.46875,1.99609 4.46875,4.46875v9.0625c0,2.47266 -1.99609,4.46875 -4.46875,4.46875h-9.0625c-2.47266,0 -4.46875,-1.99609 -4.46875,-4.46875v-9.0625c0,-2.47266 1.99609,-4.46875 4.46875,-4.46875zM21.90625,9.1875c-0.50391,0 -0.90625,0.40234 -0.90625,0.90625c0,0.50391 0.40234,0.90625 0.90625,0.90625c0.50391,0 0.90625,-0.40234 0.90625,-0.90625c0,-0.50391 -0.40234,-0.90625 -0.90625,-0.90625zM16,10c-3.30078,0 -6,2.69922 -6,6c0,3.30078 2.69922,6 6,6c3.30078,0 6,-2.69922 6,-6c0,-3.30078 -2.69922,-6 -6,-6zM16,12c2.22266,0 4,1.77734 4,4c0,2.22266 -1.77734,4 -4,4c-2.22266,0 -4,-1.77734 -4,-4c0,-2.22266 1.77734,-4 4,-4z"></path>
               </g>
@@ -23,48 +77,73 @@ const ContactPage = () => {
 
           {/* Twitter/X */}
           <div className="sg-card">
-            <svg className="twitter" onClick={() => window.open('https://x.com/Almond061109', '_blank')} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <svg 
+              className="twitter" 
+              onClick={(e) => handleLinkClick(e, 'https://x.com/Almond061109')} 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 24 24"
+            >
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
             </svg>
           </div>
 
-         {/* Gmail */}
-              <div className="sg-card"> 
-                 <ButtonMailto email="roshen09.edu@gmail.com" >
-                  <svg 
-                    className="gmail" 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
-                  </svg>
-                  </ButtonMailto>
-              </div>
+         {/* Gmail - Wrapped in onClick to intercept the link */}
+          <div className="sg-card" onClick={handleMailClick}> 
+             <ButtonMailto email="roshen09.edu@gmail.com" >
+              <svg 
+                className="gmail" 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
+              </svg>
+              </ButtonMailto>
+          </div>
               
           {/* IEEE */}
           <div className="sg-card">
-            <svg className="codepen" onClick={() => window.open('https://ieee.ce-kgr.org/', '_blank')} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+            <svg 
+              className="codepen" 
+              onClick={(e) => handleLinkClick(e, 'https://ieee.ce-kgr.org/')} 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 50 50"
+            >
               <path d="M 25 4 L 4 17.34375 L 4 32.652344 L 25 46 L 46 32.65625 L 46 17.34375 Z M 25 29.183594 L 19.066406 25.070313 L 25 21.023438 L 30.933594 25.070313 Z M 27 17.605469 L 27 9.949219 L 40.429688 18.484375 L 34.410156 22.65625 Z M 23 17.605469 L 15.589844 22.65625 L 9.570313 18.484375 L 23 9.949219 Z M 12.09375 25.042969 L 8 27.832031 L 8 22.203125 Z M 15.570313 27.453125 L 23 32.605469 L 23 40.050781 L 9.589844 31.527344 Z M 27 32.605469 L 34.429688 27.453125 L 40.410156 31.527344 L 27 40.050781 Z M 37.90625 25.042969 L 42 22.203125 L 42 27.832031 Z"></path>
             </svg>
           </div>
 
           {/* LinkedIn */}
           <div className="sg-card">
-            <svg className="linkedin" onClick={() => window.open('https://www.linkedin.com/in/roshen-reji-110746365/', '_blank')} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+            <svg 
+              className="linkedin" 
+              onClick={(e) => handleLinkClick(e, 'https://www.linkedin.com/in/roshen-reji-110746365/')} 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 448 512"
+            >
               <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8 0 24.5 24.09 0 53.79 0c29.5 0 53.8 24.5 53.8 53.8s-24.3 54.3-53.8 54.3zM447.9 448h-92.4V302.4c0-34.7-12.4-58.4-43.4-58.4-23.6 0-37.6 15.8-43.7 31.1-2.3 5.6-2.8 13.5-2.8 21.4V448h-92.5s1.2-267.4 0-295H269v41.8c12.3-19 34.3-46.2 83.4-46.2 60.9 0 106.5 39.8 106.5 125.2V448z"/>
             </svg>
           </div>
 
           {/* Discord */}
           <div className="sg-card">
-            <svg className="discord" viewBox="0 0 48 48" onClick={() => window.open('https://discord.com/users/762911190518333450')} xmlns="http://www.w3.org/2000/svg">
+            <svg 
+              className="discord" 
+              onClick={(e) => handleLinkClick(e, 'https://discord.com/users/762911190518333450')} 
+              viewBox="0 0 48 48" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path d="M40,12c0,0-4.585-3.588-10-4l-0.488,0.976C34.408,10.174,36.654,11.891,39,14c-4.045-2.065-8.039-4-15-4s-10.955,1.935-15,4c2.346-2.109,5.018-4.015,9.488-5.024L18,8c-5.681,0.537-10,4-10,4s-5.121,7.425-6,22c5.162,5.953,13,6,13,6l1.639-2.185C13.857,36.848,10.715,35.121,8,32c3.238,2.45,8.125,5,16,5s12.762-2.55,16-5c-2.715,3.121-5.857,4.848-8.639,5.815L33,40c0,0,7.838-0.047,13-6C45.121,19.425,40,12,40,12z M17.5,30c-1.933,0-3.5-1.791-3.5-4c0-2.209,1.567-4,3.5-4s3.5,1.791,3.5,4C21,28.209,19.433,30,17.5,30z M30.5,30c-1.933,0-3.5-1.791-3.5-4c0-2.209,1.567-4,3.5-4s3.5,1.791,3.5,4C34,28.209,32.433,30,30.5,30z"></path>
             </svg>
           </div>
 
           {/* GitHub */}
           <div className="sg-card">
-            <svg className="github" onClick={() => window.open('https://github.com/Roshen-Reji')}xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+            <svg 
+              className="github" 
+              onClick={(e) => handleLinkClick(e, 'https://github.com/Roshen-Reji')} 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 30 30"
+            >
               <path d="M15,3C8.373,3,3,8.373,3,15c0,5.623,3.872,10.328,9.092,11.63C12.036,26.468,12,26.28,12,26.047v-2.051 c-0.487,0-1.303,0-1.508,0c-0.821,0-1.551-0.353-1.905-1.009c-0.393-0.729-0.461-1.844-1.435-2.526 c-0.289-0.227-0.069-0.486,0.264-0.451c0.615,0.174,1.125,0.596,1.605,1.222c0.478,0.627,0.703,0.769,1.596,0.769 c0.433,0,1.081-0.025,1.691-0.121c0.328-0.833,0.895-1.6,1.588-1.962c-3.996-0.411-5.903-2.399-5.903-5.098 c0-1.162,0.495-2.286,1.336-3.233C9.053,10.647,8.706,8.73,9.435,8c1.798,0,2.885,1.166,3.146,1.481C13.477,9.174,14.461,9,15.495,9 c1.036,0,2.024,0.174,2.922,0.483C18.675,9.17,19.763,8,21.565,8c0.732,0.731,0.381,2.656,0.102,3.594 c0.836,0.945,1.328,2.066,1.328,3.226c0,2.697-1.904,4.684-5.894,5.097C18.199,20.49,19,22.1,19,23.313v2.734 c0,0.104-0.023,0.179-0.035,0.268C23.641,24.676,27,20.236,27,15C27,8.373,21.627,3,15,3z"></path>
             </svg>
           </div>
@@ -88,8 +167,11 @@ const ContactPage = () => {
               </g>
             </svg>
           </div>
-
-          <p className="sg-text">HOVER<br/><br/>FOR<br/><br/>SOCIAL</p>
+          
+          <p className="sg-text">
+            {isExpanded ? "CONNECT" : "HOVER/TAP"}
+            <br/><br/>FOR<br/><br/>SOCIAL
+          </p>
           <div className="sg-main_back"></div>
         </div>
       </div>

@@ -63,16 +63,20 @@
 .sg-card:nth-child(8) { border-radius: 0; }
 .sg-card:nth-child(9) { border-radius: 0 0 10px 0; }
 
-.sg-main:hover {
+.sg-main:hover,
+.sg-main.expanded {
     width: 14em;
     cursor: pointer;
 }
 
-.sg-main:hover .sg-main_back {
+.sg-main:hover .sg-main_back,
+.sg-main.expanded .sg-main_back {
     opacity: 0;
 }
 
-.sg-main:hover .sg-card {
+/* Expansion logic shared for hover and .expanded state */
+.sg-main:hover .sg-card,
+.sg-main.expanded .sg-card {
     margin: .2em;
     border-radius: 10px;
     box-shadow: 0 4px 30px rgba(0,0,0,0.1);
@@ -80,16 +84,19 @@
     background: rgba(255,255,255,0.2);
 }
 
-.sg-main:hover .sg-card:nth-child(5) {
+.sg-main:hover .sg-card:nth-child(5),
+.sg-main.expanded .sg-card:nth-child(5) {
     border: transparent;
 }
 
-.sg-main:hover .sg-text {
+.sg-main:hover .sg-text,
+.sg-main.expanded .sg-text {
     opacity: 0;
     z-index: -3;
 }
 
-.sg-main:hover .sg-card svg {
+.sg-main:hover .sg-card svg,
+.sg-main.expanded .sg-card svg {
     opacity: 1;
 }
 
@@ -104,15 +111,9 @@
 .sg-card:nth-child(2):hover .twitter { fill: white; }
 
 /* Gmail */
-.sg-card:nth-child(3) .gmail { 
-    fill: #EA4335; 
-}
-.sg-card:nth-child(3):hover { 
-    background-color: #EA4335; 
-}
-.sg-card:nth-child(3):hover .gmail { 
-    fill: white; 
-}
+.sg-card:nth-child(3) .gmail { fill: #EA4335; }
+.sg-card:nth-child(3):hover { background-color: #EA4335; }
+.sg-card:nth-child(3):hover .gmail { fill: white; }
 
 /* Codepen */
 .sg-card:nth-child(4) .codepen { fill: black; }
@@ -156,94 +157,65 @@
     z-index: 3;
     pointer-events: none;
 }
+
 @media (max-width: 768px) {
-    
-    /* 1. Dark Bluish Background */
     .sg-wrapper {
         width: 100%;
-        /* Premium dark gradient */
         background: radial-gradient(circle at center, #1e293b, #0f172a); 
-        /* Prevent scrollbars during expansion */
         overflow: hidden; 
     }
 
-    /* 2. Text: Bright White & Shadow */
     .sg-text {
         color: rgba(255, 255, 255, 0.95);
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
         font-weight: 600;
         letter-spacing: 0.2em;
         z-index: 20;
-        pointer-events: none; /* Allows taps to pass through to the cards */
+        pointer-events: none;
     }
 
-    /* 3. Hide the colorful blob to focus on the Glass look */
     .sg-main_back {
         display: none !important;
     }
 
-    /* 4. MAIN CONTAINER: Force Fixed Width for Alignment */
     .sg-main {
-        /* FIXED PIXEL WIDTH: Ensures 3 cards (60px*3) always fit in a row */
-        /* 14em can be unstable on mobile font settings, causing the "not a proper box" issue */
         width: 220px !important; 
-        
-        /* Center the grid */
         margin: 0 auto;
-        
-        /* Enable tap highlight */
         -webkit-tap-highlight-color: transparent; 
+        transition: width 0.3s ease-in-out; /* Smooth width transition */
     }
 
-    /* 5. CARD: Glassmorphic Design (Collapsed State) */
     .sg-card {
-        /* Very transparent white */
         background: rgba(255, 255, 255, 0.08); 
-        /* The Blur Effect */
         backdrop-filter: blur(12px); 
         -webkit-backdrop-filter: blur(12px);
-        /* Subtle Border */
         border: 1px solid rgba(255, 255, 255, 0.15); 
-        /* Glow */
         box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
     }
 
-    /* 6. INTERACTION: Handle Tap (Hover) State */
-    /* Use :active and :focus-within to mimic hover on touch */
-    .sg-main:active,
-    .sg-main:focus-within {
-        /* Increase width slightly to fit the expanded margins */
+    /* REPLACED: .sg-main:active & :focus-within WITH .sg-main.expanded */
+    .sg-main.expanded {
         width: 260px !important; 
     }
 
-    /* 7. CARD EXPANSION ANIMATION */
-    .sg-main:active .sg-card,
-    .sg-main:focus-within .sg-card {
-        /* Add spacing between cards */
+    .sg-main.expanded .sg-card {
         margin: 5px; 
-        
-        /* Brighter Glass on Tap */
         background: rgba(255, 255, 255, 0.15); 
         border: 1px solid rgba(255, 255, 255, 0.3);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        border-radius: 12px; /* Smooth rounded corners */
+        border-radius: 12px;
     }
 
-    /* 8. Hide Text on Tap */
-    .sg-main:active .sg-text,
-    .sg-main:focus-within .sg-text {
+    .sg-main.expanded .sg-text {
         opacity: 0;
     }
 
-    /* 9. Show & Scale Icons on Tap */
-    .sg-main:active .sg-card svg,
-    .sg-main:focus-within .sg-card svg {
+    .sg-main.expanded .sg-card svg {
         opacity: 1;
         transform: scale(1.1); 
         filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
     }
     
-    /* 10. Force Icons to White (Optional, for better contrast on dark bg) */
     .sg-card svg path {
         fill: #ffffff;
     }

@@ -10,7 +10,7 @@ const Navigation = ({ currentPage, onNavigate }) => {
   ];
 
   return (
-    <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 px-4 w-full max-w-fit">
+    <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 px-4 w-full max-w-fit @media(max-width: 640px){fixed bottom-6 left-1/2 -translate-x-1/2 px-4 w-full}">
       {/* ULTRA-GLOSS CONTAINER STYLES:
          - bg-gradient-to-b...: Creates the vertical reflective sheen.
          - backdrop-saturate-150: Makes colors behind the glass pop (refraction effect).
